@@ -8,7 +8,7 @@ TYPE_INTERVAL = 0.1
 class Command:
     def __init__(self, cmd: str, delay: int, heal_interval: int | None = None) -> None:
         self.cmd = cmd
-        self.delay = delay
+        self.delay = delay + 0.8 # Add bit of extra delay to account for delay to bot
         self.heal_interval = heal_interval
 
         self.last_executed = 0
@@ -41,10 +41,9 @@ class Command:
 
     def _run_command(self, command: str):
         print("\tRunning command: " + command)
-        # return
         pyautogui.typewrite(command, interval=TYPE_INTERVAL)
-        pyautogui.typewrite("\t\n\n", interval=TYPE_INTERVAL)
-        # pyautogui.press("enter")
+        time.sleep(0.25)
+        pyautogui.typewrite("\t\n\n\n", interval=TYPE_INTERVAL * 3)
         time.sleep(0.1)
 
 
@@ -55,8 +54,7 @@ class Script:
         pass
 
     def run(self):
-        self.click(1900, 2100)
-        time.sleep(5)
+        time.sleep(3)
         while True:
             for command in self.commands:
                 if command.should_execute:
@@ -74,6 +72,13 @@ class Script:
 
 
 if __name__ == "__main__":
+    # Press the Windows key to open the Start menu
+    pyautogui.press("win")
+    time.sleep(1)
+    pyautogui.typewrite("discord", interval=TYPE_INTERVAL)
+    time.sleep(1)
+    pyautogui.press("enter")
+
     script = Script()
     # Run /hunt every 60 seconds, and every 10 times do a /heal
     script.register("/hunt", 1 * 60, heal_inteval=10)
