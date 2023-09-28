@@ -58,7 +58,6 @@ class Script:
         self.click(1900, 2100)
         time.sleep(5)
         while True:
-            print("loop")
             for command in self.commands:
                 if command.should_execute:
                     command.execute()
