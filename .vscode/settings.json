@@ -8,5 +8,8 @@
         "**/Thumbs.db": true,
         "**/__pycache__": true
     },
-    "hide-files.files": []
+    "hide-files.files": [],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
 }
