@@ -79,9 +79,19 @@ if __name__ == "__main__":
     script = Script()
     with open("config.yaml", "r") as yaml_file:
         config: dict[str, Any] = yaml.safe_load(yaml_file)
-        commands: dict[str, float] = config["commands"]
-        for cmd, delay in commands.items():
-            script.register(cmd, delay * 60)  # Convert minutes to seconds
+        commands: dict[str, float | dict[str, float | int]] = config["commands"]
+        for cmd, data in commands.items():
+            if isinstance(data, dict):
+                delay = data["delay"]
+                heal_interval: int | None = (
+                    int(data["heal-interval"]) if "heal-interval" in data else None
+                )
+            else:
+                delay = data
+                heal_interval = None
+            script.register(
+                cmd, delay * 60, heal_inteval=heal_interval
+            )  # Convert minutes to seconds
 
     pyautogui.press("win")
     time.sleep(1)
