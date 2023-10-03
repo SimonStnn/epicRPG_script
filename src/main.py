@@ -1,4 +1,5 @@
 import time
+import random
 import pyautogui
 
 MOVE_DURATION = 0.3
@@ -8,7 +9,7 @@ TYPE_INTERVAL = 0.1
 class Command:
     def __init__(self, cmd: str, delay: int, heal_interval: int | None = None) -> None:
         self.cmd = cmd
-        self.delay = delay + 0.8 # Add bit of extra delay to account for delay to bot
+        self.delay = delay + 0.8  # Add bit of extra delay to account for delay to bot
         self.heal_interval = heal_interval
 
         self.last_executed = 0
@@ -67,7 +68,7 @@ class Script:
         pyautogui.click()
         time.sleep(0.1)
 
-    def register(self, command: str, delay: int, *, heal_inteval: int = None):
+    def register(self, command: str, delay: int, *, heal_inteval: int | None = None):
         self.commands.append(Command(command, delay, heal_inteval))
 
 
