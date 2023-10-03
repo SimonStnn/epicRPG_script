@@ -1,5 +1,5 @@
 import time
-import random
+import yaml
 import pyautogui
 
 MOVE_DURATION = 0.3
@@ -73,7 +73,6 @@ class Script:
 
 
 if __name__ == "__main__":
-    # Press the Windows key to open the Start menu
     pyautogui.press("win")
     time.sleep(1)
     pyautogui.typewrite("discord", interval=TYPE_INTERVAL)
@@ -81,12 +80,9 @@ if __name__ == "__main__":
     pyautogui.press("enter")
 
     script = Script()
-    # Run /hunt every 60 seconds, and every 10 times do a /heal
-    script.register("/hunt", 1 * 60, heal_inteval=10)
-    # Run /adventure every 60 minutes
-    script.register("/adventure", 60 * 60)
-    # RUn /farm every 10 minutes
-    script.register("/farm", 10 * 60)
+    with open("config.yaml", "r") as yaml_file:
+        for cmd, delay in yaml.safe_load(yaml_file).keys():
+            script.register(cmd, delay * 60)  # Convert minutes to seconds
 
     print("Script started, press CTRL+C to stop")
     try:
