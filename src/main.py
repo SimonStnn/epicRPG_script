@@ -1,13 +1,16 @@
 import time
 import yaml
 import pyautogui
+from typing import Any
 
 MOVE_DURATION = 0.3
 TYPE_INTERVAL = 0.1
 
 
 class Command:
-    def __init__(self, cmd: str, delay: int, heal_interval: int | None = None) -> None:
+    def __init__(
+        self, cmd: str, delay: float, heal_interval: int | None = None
+    ) -> None:
         self.cmd = cmd
         self.delay = delay + 0.8  # Add bit of extra delay to account for delay to bot
         self.heal_interval = heal_interval
@@ -68,21 +71,23 @@ class Script:
         pyautogui.click()
         time.sleep(0.1)
 
-    def register(self, command: str, delay: int, *, heal_inteval: int | None = None):
+    def register(self, command: str, delay: float, *, heal_inteval: int | None = None):
         self.commands.append(Command(command, delay, heal_inteval))
 
 
 if __name__ == "__main__":
+    script = Script()
+    with open("config.yaml", "r") as yaml_file:
+        config: dict[str, Any] = yaml.safe_load(yaml_file)
+        commands: dict[str, float] = config["commands"]
+        for cmd, delay in commands.items():
+            script.register(cmd, delay * 60)  # Convert minutes to seconds
+
     pyautogui.press("win")
     time.sleep(1)
     pyautogui.typewrite("discord", interval=TYPE_INTERVAL)
     time.sleep(1)
     pyautogui.press("enter")
-
-    script = Script()
-    with open("config.yaml", "r") as yaml_file:
-        for cmd, delay in yaml.safe_load(yaml_file).keys():
-            script.register(cmd, delay * 60)  # Convert minutes to seconds
 
     print("Script started, press CTRL+C to stop")
     try:
