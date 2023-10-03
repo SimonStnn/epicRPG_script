@@ -1,5 +1,7 @@
 commands:
   # <commando>: <cooldown in minutes>
-  /hunt: 1
+  /hunt: 
+    delay: 1
+    heal-interval: 30
   /adventure: 60
-  /pickaxe: 15
+  /pickaxe: 5
