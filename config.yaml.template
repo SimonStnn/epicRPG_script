@@ -1,0 +1,5 @@
+commands:
+  # <commando>: <cooldown in minutes>
+  /hunt: 1
+  /adventure: 60
+  /pickaxe: 15
