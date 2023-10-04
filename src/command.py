@@ -42,7 +42,10 @@ class Command:
 
     def _run_command(self, command: str):
         print("\tRunning command: " + command)
-        pyautogui.typewrite(command, interval=CONFIG["type-interval"])
-        time.sleep(0.25)
-        pyautogui.typewrite("\t\n\n\n", interval=CONFIG["type-interval"] * 3)
-        time.sleep(0.1)
+        self._typewrite(command[-1])
+        self._typewrite("\t", 0.25)
+        self._typewrite("\t\n\n\n", interval=CONFIG["type-interval"] * 3)
+
+    def _typewrite(self, string: str, delay: float = 0.1, interval: float | None = None):
+        pyautogui.typewrite(string, interval=interval if interval else CONFIG["type-interval"])
+        time.sleep(delay)
