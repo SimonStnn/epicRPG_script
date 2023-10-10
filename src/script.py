@@ -25,5 +25,6 @@ class Script:
         pyautogui.click()
         time.sleep(0.1)
 
-    def register(self, command: str, delay: float, *, heal_inteval: int | None = None):
-        self.commands.append(Command(command, delay, heal_inteval))
+    
+    def register(self, command: Command):
+        self.commands.append(command)

@@ -1,25 +1,35 @@
 import time
 import pyautogui
+from typing import Any
 
 from script import Script
+from command import Command
 from const import CONFIG
 
 if __name__ == "__main__":
     script = Script()
 
-    commands: dict[str, float | dict[str, float | int]] = CONFIG["commands"]
+    commands: dict[str, Any | dict[str, Any]] = CONFIG["commands"]
     for cmd, data in commands.items():
-        if isinstance(data, dict):
-            delay = data["delay"]
-            heal_interval: int | None = (
-                int(data["heal-interval"]) if "heal-interval" in data else None
-            )
-        else:
-            delay = data
-            heal_interval = None
+        if not isinstance(data, dict):
+            data = {"delay": data}
+
+        delay = float(data["delay"]) * 60  # Convert minutes to seconds
+        heal_interval = int(data["heal-interval"]) if "heal-interval" in data else None
+        args = dict(data["args"]) if "args" in data else {}
+        args_auto_selected = (
+            data["args-auto-selected"] if "args-auto-selected" in data else False
+        )
+        
         script.register(
-            cmd, delay * 60, heal_inteval=heal_interval
-        )  # Convert minutes to seconds
+            Command(
+                cmd,
+                delay,
+                heal_interval,
+                args,
+                args_auto_selected,
+            )
+        )
 
     # Open discord
     pyautogui.press("win")
