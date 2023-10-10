@@ -1,5 +1,10 @@
 commands:
   # <commando>: <cooldown in minutes>
+  /profile:
+  delay: 0.1
+  args-auto-selected: false
+  args:
+    user: "username"
   /hunt: 
     delay: 1
     heal-interval: 30
